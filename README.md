@@ -121,6 +121,53 @@ MMT/logs
 ---esnet50_ibn_a.pth.tar
 ```
 
+## Trained
+Transferring from  [DukeMTMC-reID](https://arxiv.org/abs/1609.01775)  to  [Market-1501](https://www.cv-foundation.org/openaccess/content_iccv_2015/papers/Zheng_Scalable_Person_Re-Identification_ICCV_2015_paper.pdf)  on the backbone of  [ResNet-50](https://arxiv.org/abs/1512.03385) , /i.e. Duke-to-Market (ResNet-50)/.
+
+We use Google's colab for the experiment, with only one GPU, so our beach_size parameter is set to 32 during training.https://colab.research.google.com/
+
+*Use the following code for pre-training*
+```
+python examples/source_pretrain.py -ds dukemtmc
+ -dt market1501 -a resnet50 --seed 1 --margin 0.0 \
+	--num-instances 4 -b 64 -j 4 --warmup-step 10 --lr 0.00035 --milestones 40 70 --iters 100 --epochs 80 --eval-step 40 \
+	--logs-dir logs/${SOURCE}TO${TARGET}/${ARCH}-pretrain-${SEED}
+
+
+python examples/source_pretrain.py  -ds dukemtmc
+ -dt market1501 -a resnet50 --seed 2 --margin 0.0 \
+	--num-instances 4 -b 64 -j 4 --warmup-step 10 --lr 0.00035 --milestones 40 70 --iters 100 --epochs 80 --eval-step 40 \
+	--logs-dir logs/${SOURCE}TO${TARGET}/${ARCH}-pretrain-${SEED}
+
+```
+
+*Use the following code for End-to-end training with MMT-500*
+
+```
+python examples/base_train_kmeans.py -dt market1501 -a resnet50 --num-clusters 500 \
+	--num-instances 4 --lr 0.00035 --iters 400 -b 64 --epochs 40 --dropout 0 \
+
+python examples/base_train_dbscan.py -ds dukemtmc -dt $market1501 -a resnet50 \
+	--num-instances 4 --lr 0.00035 --iters 400 -b 64 --epochs 40 --dropout 0 --lambda-value 0 \
+```
+
+
+## Citation
+> Ge Y, Chen D, Li H. Mutual mean-teaching: Pseudo label refinery for unsupervised domain adaptation on person re-identification[J]. arXiv preprint arXiv:2001.01526, 2020.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
