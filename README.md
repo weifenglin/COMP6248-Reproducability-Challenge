@@ -152,7 +152,7 @@ python examples/base_train_dbscan.py -ds dukemtmc -dt $market1501 -a resnet50 \
 ```
 
 
-## Citation
+## Reference
 > Ge Y, Chen D, Li H. Mutual mean-teaching: Pseudo label refinery for unsupervised domain adaptation on person re-identification[J]. arXiv preprint arXiv:2001.01526, 2020.
 
 
